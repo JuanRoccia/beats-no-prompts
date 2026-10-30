@@ -74,7 +74,7 @@ También podés arrastrar las ventanas desde la barra de título, minimizarlas d
 El repo ya está inicializado y con el primer commit hecho. Para conectarlo:
 
 ```bash
-git remote add origin https://github.com/TU-USUARIO/TU-REPO.git
+git remote add origin https://github.com/JuanRoccia/beats-no-prompts.git
 git branch -M main
 git push -u origin main
 ```

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="no es ia, es música muerta — un álbum para escuchar en una interfaz vintage." />
+  <meta property="og:title" content="no es ia, es música muerta" />
+  <meta property="og:description" content="Un álbum web con interfaz vintage inspirada en Winamp." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="docs/preview.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>no es ia, es música muerta :: winamp 2.91</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="crt" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <div class="desktop" id="desktop">
+    <div class="wall-mark" aria-hidden="true">
+      <span>NO ES IA</span>
+      <span>ES MÚSICA MUERTA</span>
+      <small>beats · no prompts</small>
+    </div>
+
+    <main class="workspace" id="workspace">
+      <section class="window player-window" data-window="player" id="playerWindow" aria-label="Reproductor">
+        <header class="titlebar drag-handle">
+          <span class="titlebar-grip" aria-hidden="true"></span>
+          <span class="titlebar-title"><span class="title-blink">♪</span> NO ES IA, ES MÚSICA MUERTA</span>
+          <span class="titlebar-buttons">
+            <button class="tb-btn" data-action="minimize" aria-label="Minimizar reproductor" title="Minimizar">_</button>
+            <button class="tb-btn" data-action="close" aria-label="Cerrar reproductor" title="Cerrar">×</button>
+          </span>
+        </header>
+
+        <div class="menubar">
+          <div class="menubar-left">
+            <button class="menu-item" data-action="about">ARCHIVO</button>
+            <button class="menu-item" data-action="about">VER</button>
+            <button class="menu-item" data-action="about">OPCIONES</button>
+            <button class="menu-item" data-action="about">AYUDA</button>
+          </div>
+          <button class="skin-btn" id="skinBtn" title="Cambiar skin">SKIN: <span id="skinName">GREEN</span></button>
+        </div>
+
+        <div class="lcd">
+          <div class="lcd-top">
+            <span class="lcd-index" id="lcdIndex">01</span>
+            <div class="marquee" id="marquee" aria-live="polite">
+              <div class="marquee-track" id="marqueeTrack">
+                <span id="marqueeText">NO ES IA, ES MÚSICA MUERTA</span>
+                <span class="marquee-sep" aria-hidden="true"> • </span>
+                <span id="marqueeText2" aria-hidden="true">NO ES IA, ES MÚSICA MUERTA</span>
+                <span class="marquee-sep" aria-hidden="true"> • </span>
+              </div>
+            </div>
+            <span class="lcd-kbps" id="lcdKbps">320 kbps</span>
+          </div>
+
+          <div class="lcd-screen">
+            <canvas class="spectrum" id="spectrum" aria-hidden="true"></canvas>
+            <div class="lcd-left">
+              <span class="lcd-artist" id="lcdArtist">no es ia, es música muerta</span>
+              <span class="lcd-title" id="lcdTitle">SELECCIONÁ UN TEMA</span>
+            </div>
+            <div class="lcd-clock">
+              <span id="timeCurrent">00:00</span>
+              <span class="clock-sep">/</span>
+              <span id="timeTotal">00:00</span>
+            </div>
+          </div>
+
+          <div class="seekbar" id="seekbar" role="slider" tabindex="0" aria-label="Posición de la canción" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="seek-fill" id="seekFill"></div>
+            <div class="seek-thumb" id="seekThumb"></div>
+          </div>
+
+          <div class="lcd-bottom">
+            <span class="lcd-status" id="statusText">READY // SIDE A</span>
+            <span class="lcd-status" id="eqStatus">EQ: ON</span>
+          </div>
+        </div>
+
+        <div class="transport">
+          <button class="transport-btn" data-action="prev" title="Anterior (P)" aria-label="Tema anterior">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+          </button>
+          <button class="transport-btn play-btn" data-action="play" title="Reproducir (Space)" aria-label="Reproducir">
+            <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
+          </button>
+          <button class="transport-btn" data-action="stop" title="Detener" aria-label="Detener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h12v12H6z"/></svg>
+          </button>
+          <button class="transport-btn" data-action="next" title="Siguiente (N)" aria-label="Tema siguiente">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+          </button>
+          <button class="transport-btn eject-btn" data-action="random" title="Tema al azar" aria-label="Tema al azar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l4 6H8zm-4 10h16v2H8zm2 3h12v2H10z" transform="translate(-4 0)"/></svg>
+          </button>
+        </div>
+
+        <div class="mixer">
+          <div class="toggles">
+            <button class="toggle-btn" id="shuffleBtn" data-action="shuffle" title="Aleatorio" aria-pressed="false">SHUF</button>
+            <button class="toggle-btn" id="repeatBtn" data-action="repeat" title="Repetir" aria-pressed="false">REP</button>
+            <button class="toggle-btn is-on" id="eqToggle" data-action="eq" title="Equalizador" aria-pressed="true">EQ</button>
+          </div>
+          <div class="volume">
+            <span class="vol-label" id="volLabel">VOL</span>
+            <input type="range" id="volume" min="0" max="100" value="78" aria-label="Volumen" />
+            <span class="vol-value" id="volValue">78</span>
+          </div>
+        </div>
+
+        <div class="statusbar">
+          <span id="statusSong">00:00 / 20:44</span>
+          <span class="statusbar-right">STEREO <span class="led is-on" id="playLed"></span></span>
+        </div>
+      </section>
+      <section class="window eq-window" data-window="eq" id="eqWindow" aria-label="Ecualizador">
+        <header class="titlebar drag-handle">
+          <span class="titlebar-grip" aria-hidden="true"></span>
+          <span class="titlebar-title">◦ 5 BAND EQUALIZER</span>
+          <span class="titlebar-buttons">
+            <button class="tb-btn" data-action="minimize" aria-label="Minimizar ecualizador" title="Minimizar">_</button>
+            <button class="tb-btn" data-action="close" aria-label="Cerrar ecualizador" title="Cerrar">×</button>
+          </span>
+        </header>
+
+        <div class="eq-body">
+          <div class="eq-toolbar">
+            <button class="eq-power is-on" id="eqPower" aria-pressed="true">ON</button>
+            <select id="eqPreset" aria-label="Preset de ecualización">
+              <option value="flat">FLAT</option>
+              <option value="bass">BASS BOOST</option>
+              <option value="club">CLUB</option>
+              <option value="vox">VOX</option>
+              <option value="lofi">LO-FI</option>
+              <option value="cassette">CASSETTE</option>
+              <option value="custom" disabled>CUSTOM</option>
+            </select>
+            <button class="eq-reset" id="eqReset" title="Volver a flat">RESET</button>
+          </div>
+
+          <div class="eq-scale" aria-hidden="true">
+            <span>+12</span><span>0</span><span>-12</span>
+          </div>
+
+          <div class="eq-bands" id="eqBands">
+            <label class="band">
+              <span class="band-value" data-band-value="0">0</span>
+              <input type="range" data-band="0" min="-12" max="12" value="0" step="1" orient="vertical" aria-label="Graves" />
+              <span class="band-label">60</span>
+            </label>
+            <label class="band">
+              <span class="band-value" data-band-value="1">0</span>
+              <input type="range" data-band="1" min="-12" max="12" value="0" step="1" orient="vertical" aria-label="Medios graves" />
+              <span class="band-label">230</span>
+            </label>
+            <label class="band">
+              <span class="band-value" data-band-value="2">0</span>
+              <input type="range" data-band="2" min="-12" max="12" value="0" step="1" orient="vertical" aria-label="Medios" />
+              <span class="band-label">910</span>
+            </label>
+            <label class="band">
+              <span class="band-value" data-band-value="3">0</span>
+              <input type="range" data-band="3" min="-12" max="12" value="0" step="1" orient="vertical" aria-label="Medios altos" />
+              <span class="band-label">3.6k</span>
+            </label>
+            <label class="band">
+              <span class="band-value" data-band-value="4">0</span>
+              <input type="range" data-band="4" min="-12" max="12" value="0" step="1" orient="vertical" aria-label="Agudos" />
+              <span class="band-label">14k</span>
+            </label>
+          </div>
+
+          <div class="eq-footer">
+            <span class="eq-note">ANALOG WARMTH™</span>
+            <span class="eq-vu" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+        </div>
+      </section>
+      <section class="window playlist-window" data-window="playlist" id="playlistWindow" aria-label="Lista de temas">
+        <header class="titlebar drag-handle">
+          <span class="titlebar-grip" aria-hidden="true"></span>
+          <span class="titlebar-title">▤ PLAYLIST — LADO A</span>
+          <span class="titlebar-buttons">
+            <button class="tb-btn" data-action="minimize" aria-label="Minimizar playlist" title="Minimizar">_</button>
+            <button class="tb-btn" data-action="close" aria-label="Cerrar playlist" title="Cerrar">×</button>
+          </span>
+        </header>
+
+        <div class="playlist-toolbar">
+          <span class="pl-chip">10 TEMAS</span>
+          <input type="search" id="filter" class="filter-input" placeholder="BUSCAR..." aria-label="Buscar tema" autocomplete="off" spellcheck="false" />
+          <button class="pl-btn" id="clearFilter" title="Limpiar búsqueda" aria-label="Limpiar búsqueda">✕</button>
+        </div>
+
+        <div class="playlist-head" aria-hidden="true">
+          <span>#</span>
+          <span>TÍTULO</span>
+          <span>DUR</span>
+        </div>
+
+        <ol class="playlist" id="playlist"></ol>
+
+        <div class="playlist-footer">
+          <span id="playlistCount">10 TRACKS</span>
+          <span id="playlistTotal">20:44</span>
+        </div>
+      </section>
+      <section class="window viz-window" data-window="viz" id="vizWindow" aria-label="Visualizador">
+        <header class="titlebar drag-handle">
+          <span class="titlebar-grip" aria-hidden="true"></span>
+          <span class="titlebar-title">◉ MONSTER ANALYZER</span>
+          <span class="titlebar-buttons">
+            <button class="tb-btn" data-action="minimize" aria-label="Minimizar visualizador" title="Minimizar">_</button>
+            <button class="tb-btn" data-action="close" aria-label="Cerrar visualizador" title="Cerrar">×</button>
+          </span>
+        </header>
+
+        <div class="viz-body">
+          <div class="viz-screen">
+            <canvas id="vizCanvas" aria-hidden="true"></canvas>
+            <span class="viz-label">LIVE FEED</span>
+          </div>
+
+          <div class="turntable">
+            <div class="bokeh" aria-hidden="true"></div>
+            <div class="vinyl" id="vinyl" aria-hidden="true">
+              <div class="vinyl-grooves"></div>
+              <div class="vinyl-label">
+                <span class="label-top">NESM</span>
+                <span class="label-mid">no es ia<br />es música<br />muerta</span>
+                <span class="label-bottom">33⅓ RPM</span>
+              </div>
+            </div>
+            <div class="tonearm" id="tonearm" aria-hidden="true">
+              <span class="tonearm-pivot"></span>
+              <span class="tonearm-arm"></span>
+              <span class="tonearm-head"></span>
+            </div>
+          </div>
+
+          <div class="viz-footer">
+            <span id="vizTitle">ESPERANDO SEÑAL</span>
+            <span class="viz-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="taskbar" aria-label="Barra de tareas">
+      <button class="start-btn" id="startBtn" title="Mostrar todas las ventanas">
+        <span class="start-icon" aria-hidden="true">♪</span>
+        <span>INICIO</span>
+      </button>
+
+      <div class="task-list" id="taskList">
+        <button class="task-btn is-active" data-task="player"><span aria-hidden="true">▣</span> PLAYER</button>
+        <button class="task-btn" data-task="playlist"><span aria-hidden="true">▤</span> PLAYLIST</button>
+        <button class="task-btn" data-task="eq"><span aria-hidden="true">▥</span> EQ</button>
+        <button class="task-btn" data-task="viz"><span aria-hidden="true">◉</span> VIZ</button>
+      </div>
+
+      <div class="tray">
+        <span class="tray-led" id="trayLed" title="Reproduciendo"></span>
+        <span class="tray-text" id="trayText">STANDBY</span>
+        <span class="clock" id="clock">--:--</span>
+      </div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <audio id="audio" preload="metadata"></audio>
+
+  <noscript>
+    <p class="noscript">Este álbum necesita JavaScript para sonar. Perdón, la nostalgia tiene requisitos.</p>
+  </noscript>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

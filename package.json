@@ -1,0 +1,22 @@
+{
+  "name": "no-es-ia-es-musica-muerta",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Un álbum web con interfaz vintage inspirada en Winamp.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "music",
+    "album",
+    "winamp",
+    "retro",
+    "audio"
+  ],
+  "license": "UNLICENSED"
+}
